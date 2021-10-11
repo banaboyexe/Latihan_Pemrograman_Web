@@ -91,4 +91,27 @@ function delete($id){
     mysqli_query($db, "DELETE FROM mahasiswa WHERE idmahasiswa = '$id'");
     return mysqli_affected_rows($db);
 }
+
+function editMahasiswa($data){
+    global $db;
+    
+    $id = $data["id"];
+    $nama = htmlspecialchars($data["nama"]);
+    $npm = htmlspecialchars($data["npm"]);
+    $email = htmlspecialchars($data["email"]);
+    $gambarLama = $data["gambarLama"];
+
+    // Cek, apakah gambar diubah?
+    if($_FILES["gambar"]["error"] === 4){
+        $gambar = $gambarLama;
+    } else {
+        $gambar = upload();
+    }
+
+    // ambil data dan masukan kedalam database
+    $query = "UPDATE mahasiswa SET nama ='$nama', npm = '$npm', email = '$email', gambar = '$gambar' WHERE idmahasiswa = $id";
+    mysqli_query($db, $query);
+
+    return mysqli_affected_rows($db);
+}
 ?>

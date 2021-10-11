@@ -45,7 +45,7 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
                 <img src="img/<?php echo $row["gambar"]; ?>" width="50">
             </td>
             <td>
-                <a href="">Edit</a> |
+                <a href="editMahasiswa.php?id=<?php echo $row["idmahasiswa"]; ?>">Edit</a> |
                 <a href="delete.php?id=<?php echo $row["idmahasiswa"]; ?>">Delete</a>
             </td>
         </tr>
