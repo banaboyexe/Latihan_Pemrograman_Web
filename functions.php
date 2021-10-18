@@ -124,19 +124,19 @@ function register($data) {
     $password = mysqli_real_escape_string($db, $data["password"]);
     $password2 = mysqli_real_escape_string($db, $data["password2"]);
 
-    // Konfirmasikan password
-    if($password !== $password2) {
+    // Cek username sudah terdaftar atau belum
+    $result = mysqli_query($db, "SELECT username FROM users WHERE username = '$username'");
+    if(mysqli_fetch_assoc($result)) {
         echo "<script>
-            alert('Konfirmasi password kamu salah');
+            alert('Username telah terdaftar');
             </script>";
         return false;
     }
 
-    // Cek username sudah terdaftar atau belum
-    $result = mysqli_query($db, "SELECT username FROM users WHERE username = $username");
-    if(mysqli_fetch_assoc($result)) {
+    // Konfirmasikan password
+    if($password !== $password2) {
         echo "<script>
-            alert('Username telah terdaftar');
+            alert('Konfirmasi password kamu salah');
             </script>";
         return false;
     }
