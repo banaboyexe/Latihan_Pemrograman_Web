@@ -114,4 +114,30 @@ function editMahasiswa($data){
 
     return mysqli_affected_rows($db);
 }
+
+function register($data) {
+    // koneksikan dengan database
+    global $db;
+
+    // Tangkap semua key yang telah diketikan user
+    $username = strtolower(stripslashes($data["username"]));
+    $password = mysqli_real_escape_string($db, $data["password"]);
+    $password2 = mysqli_real_escape_string($db, $data["password2"]);
+
+    // Konfirmasikan password
+    if($password !== $password2) {
+        echo "<script>
+            alert('Konfirmasi password kamu salah');
+            </script>";
+        return false;
+    }
+
+    // Enkripsi password
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Jika lolos, masukan username dan pw ke database
+    mysqli_query($db, "INSERT INTO users VALUES ('','$username','$password')");
+
+    return mysqli_affected_rows($db);
+}
 ?>
