@@ -132,6 +132,15 @@ function register($data) {
         return false;
     }
 
+    // Cek username sudah terdaftar atau belum
+    $result = mysqli_query($db, "SELECT username FROM users WHERE username = $username");
+    if(mysqli_fetch_assoc($result)) {
+        echo "<script>
+            alert('Username telah terdaftar');
+            </script>";
+        return false;
+    }
+
     // Enkripsi password
     $password = password_hash($password, PASSWORD_DEFAULT);
 
