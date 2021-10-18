@@ -149,4 +149,10 @@ function register($data) {
 
     return mysqli_affected_rows($db);
 }
+
+function search($keyword){
+    $query = "SELECT * FROM mahasiswa WHERE nama LIKE '%$keyword%' OR npm LIKE '%$keyword%' OR email LIKE '%$keyword%'";
+
+    return query($query);
+}
 ?>

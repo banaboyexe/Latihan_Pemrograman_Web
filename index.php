@@ -9,6 +9,10 @@ require "functions.php";
 
 $mahasiswa = query("SELECT * FROM mahasiswa");
 
+if (isset($_POST["search"])){
+    $mahasiswa = search($_POST["keyword"]);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
