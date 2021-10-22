@@ -1,9 +1,23 @@
 <?php
 session_start();
 
+if(isset($_POST["id"]) && isset($_POST["key"])){
+
+    $id = $_POST["id"];
+    $key = $_POST["key"];
+
+    $result = mysqli_query($db, "SELECT username FROM users WHERE idmahasiswa = '$id'");
+    $row = mysqli_fetch_assoc($result);
+
+    if(hash('sha256', $row["username"]) === $key) {
+        $_SESSION["login"] = true;
+    }
+}
+
 if(isset($_SESSION["login"])){
     header("Location: index.php");
 }
+
 require "functions.php";
 
 if(isset($_POST["login"])) {
@@ -15,8 +29,14 @@ if(isset($_POST["login"])) {
     $result = mysqli_query($db, "SELECT * FROM users WHERE username = '$username'");
     $row = mysqli_fetch_assoc($result);
     if(mysqli_num_rows($result) == 1){
+
         // Cek validasi password
         if(password_verify($password, $row["password"])){
+            // Cek keberadaan cookies
+            if(isset($_POST["remember"])){
+                setcookie("id", $row["idmahasiswa"]);
+                setcookie("key", hash('sha256', $row["username"]), time() + 300);
+            }
             // Buat session
             $_SESSION["login"] = true;
 
@@ -60,6 +80,12 @@ if(isset($_POST["login"])) {
                 <td>:</td>
                 <td>
                     <input type="password" name="password" id="password" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
                 </td>
             </tr>
             <tr>
